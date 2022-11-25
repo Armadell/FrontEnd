@@ -1,5 +1,6 @@
 
-
+import { Provider } from 'react-redux';
+import { store } from './components/Redux/Store';
 import MainRouter from './components/ReactRouter/MainRouter';
 function App() {
   // const [data,setData]=useState([])
@@ -11,7 +12,9 @@ function App() {
   // })
   return (
     <div className="App">
+       <Provider store={store}>
     <MainRouter />
+    </Provider>
     </div>
   );
 }

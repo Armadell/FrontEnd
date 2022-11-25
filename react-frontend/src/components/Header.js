@@ -4,38 +4,26 @@ import Navbar from 'react-bootstrap/Navbar';
 import React,{useEffect, useState} from 'react'
 import { LinkContainer } from 'react-router-bootstrap'
 import axiosInstance from '../axios'
-
-
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux'
+import { fetchUser } from './Redux/ProfileRedux';
 import { MDBCol, MDBContainer, MDBRow, MDBCard, MDBCardTitle, MDBCardText, MDBCardBody, MDBCardImage, MDBBtn } from 'mdb-react-ui-kit';
 import Login from './Login';
 
 const Header = () => {
-  const tokentoserver = localStorage.getItem('access_token');
-  console.log(tokentoserver);
+  const initialState=useSelector((state)=>state.cart)
    
-  const [initialState,updateState]=useState([])
- 
+
+  const dispatch=useDispatch()
 
   useEffect(()=>{
-    console.log("hello")
-    axiosInstance.get(`user/authuser/`,
-              {
-                  headers: { 'Authorization': `Bearer ${tokentoserver}`,
-                'Accept':'application/json',
-              'Content-Type':'application/json'
-            }
-                  
-              }
-          ).then((res) => {
-          console.log("result",res.data[0].user.username)
-          console.log("profile",res.data[0].profile_picture)
-       
-           updateState(res.data[0])
-             
-          }).catch(Error => {
-              console.log(Error)
-          })},[])
-  if(initialState.user ? initialState.user : ""){
+    
+    dispatch(fetchUser())
+  }
+   ,[])
+  
+  
+  if(initialState.userData.id ? initialState.userData.id : ""){
     return (
       <>
       
@@ -50,7 +38,7 @@ const Header = () => {
             <Nav.Link>Register</Nav.Link>
             </LinkContainer>
             <Nav.Link href="#features">Admin</Nav.Link>
-            {initialState.user.username ?
+            {initialState.userData.username ?
             <LinkContainer to ="logout/">
            
             <Nav.Link href="#pricing">LogOut</Nav.Link>
@@ -85,8 +73,8 @@ const Header = () => {
                         fluid />
                     </div>
                     <div className="flex-grow-1 ms-3">
-                      <MDBCardTitle>{initialState.user? initialState.user.username:''}</MDBCardTitle>
-                      <MDBCardText>{initialState.user? initialState.user.email:''}</MDBCardText>
+                      <MDBCardTitle>{initialState.userData.username ? initialState.userData.username:''}</MDBCardTitle>
+                      <MDBCardText>{initialState.userData.username ? initialState.userData.email:''}</MDBCardText>
   
                       <div className="d-flex justify-content-start rounded-3 p-2 mb-2"
                         style={{ backgroundColor: '#efefef' }}>
@@ -108,7 +96,7 @@ const Header = () => {
     )
   }
 return(
-  <Login />
+  <h1>{initialState.userData.id}</h1>
 )
  
 }
