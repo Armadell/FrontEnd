@@ -44,7 +44,7 @@ function Register() {
             password:formData.password,
         }).then((response)=>{
             
-           navigate('/Login')
+           navigate('/')
            console.log(response)
            console.log(response.data)
         }).catch((err)=>{
